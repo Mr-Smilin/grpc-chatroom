@@ -1,0 +1,32 @@
+version: '3'
+services:
+  envoy:
+    build:
+      context: ./
+      dockerfile: ./docker/envoy/Dockerfile
+    image: grpcweb/envoy
+    ports:
+      - "10000:10000"
+      - "9901:9901"
+    links:
+      - server
+  server:
+    build:
+      context: ./
+      dockerfile: ./docker/server/Dockerfile
+    image: grpcweb/server
+    working_dir: /Documents/mydocker
+    ports:
+      - "9090:9090"
+    entrypoint: java -jar server.jar
+  web:
+    build:
+      context: ./
+      dockerfile: ./docker/web/Dockerfile
+    image: grpcweb/web
+    working_dir: /app
+    environment:
+      - REACT_APP_SERVER=http://127.0.0.1:10000
+    ports:
+      - "3000:3000"
+    entrypoint: npm start

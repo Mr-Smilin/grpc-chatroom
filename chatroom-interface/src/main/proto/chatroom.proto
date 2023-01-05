@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package com.chatroom.chatroom;
+
+option java_multiple_files = true;
+option java_package = "com.chatroom.chatroom";
+option java_outer_classname = "ChatroomProto";
+
+service ChatroomService {
+  // 獲取聊天室列表
+  rpc streamChatList (ChatRequest) returns (stream ChatReply){
+  }
+  // 傳訊息
+  rpc sendMessage (RoomRequest) returns (Empty) {
+  }
+  // 連上聊天室
+  rpc streamRoom (RoomRequest) returns (stream RoomReply) {
+  }
+  // 離開聊天室
+  rpc leaveRoom (RoomRequest) returns (Empty) {
+  }
+  // 關閉聊天室(admin)
+  rpc deleteRoom (RoomRequest) returns (Empty) {
+  }
+}
+
+message Empty {
+}
+
+message ChatRequest{
+  string user = 1;
+}
+
+message ChatReply{
+  string room = 5;
+  string type = 2;
+  int64 people = 4;
+}
+
+message RoomRequest {
+  string room = 5;
+  string type = 2;
+  string user = 3;
+  string message = 4;
+}
+
+message RoomReply {
+  string room = 5;
+  string type = 2;
+  string user = 3;
+  string message = 4;
+}
